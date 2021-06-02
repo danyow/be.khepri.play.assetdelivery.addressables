@@ -34,16 +34,16 @@ namespace Khepri.AssetDelivery
             }
             isInitialized = true;
         }
-        
+
         public static bool IsPack(string name)
         {
             TryInitialize();
             return (config?.IsPack(name)).GetValueOrDefault(false);
         }
-        
+
         public static DownloadSizeAsyncOperation GetDownloadSizeAsync(object key)
         {
-            return GetDownloadSizeAsync(new [] {key});
+            return GetDownloadSizeAsync(new[] { key });
         }
 
         public static DownloadSizeAsyncOperation GetDownloadSizeAsync(IEnumerable<object> keys)
@@ -72,13 +72,13 @@ namespace Khepri.AssetDelivery
                     UDebug.LogWarningFormat("Invalid key: {0}", key);
 
                 foreach (var loc in locations)
-                    if(loc.HasDependencies)
+                    if (loc.HasDependencies)
                         allLocations.AddRange(loc.Dependencies);
             }
 
             return allLocations;
         }
-        
+
         private static bool GetResourceLocations(object key, Type type, out IList<IResourceLocation> locations)
         {
             key = EvaluateKey(key);
@@ -88,7 +88,7 @@ namespace Khepri.AssetDelivery
             foreach (var locator in Addressables.ResourceLocators)
             {
                 IList<IResourceLocation> locs;
-                if (!locator.Locate(key, type, out locs)) 
+                if (!locator.Locate(key, type, out locs))
                     continue;
 
                 if (locations == null)
@@ -97,7 +97,7 @@ namespace Khepri.AssetDelivery
                     locations = locs;
                     continue;
                 }
-                
+
                 //less common, need to merge...
                 if (current == null)
                 {
@@ -115,10 +115,20 @@ namespace Khepri.AssetDelivery
             locations = new List<IResourceLocation>(current);
             return true;
         }
-        
+
         private static object EvaluateKey(object obj)
         {
             return (obj as IKeyEvaluator)?.RuntimeKey ?? obj;
+        }
+        public static string[] GetPacksNameFromLabel(string assetLabel)
+        {
+            IList<string> packs = GetDependencies(new[] { assetLabel })
+                .Distinct()
+                .Select(Addressables.ResourceManager.TransformInternalId)
+                .Select(Path.GetFileNameWithoutExtension)
+                .Where(IsPack)
+                .ToList();
+            return packs.ToArray<string>();
         }
     }
 }
