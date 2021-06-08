@@ -5,38 +5,24 @@ In short this package provides support for Googles' Play Asset Delivery (https:/
 
 ## Installation
 
-Before adding the package to your project you will need to have the google registry added, you can do this by editing the `manifest.json`
-```
-  "scopedRegistries": [
-    {
-      "name": "Game Package Registry by Google",
-      "url": "https://unityregistry-pa.googleapis.com",
-      "scopes": [
-        "com.google"
-      ]
-    }
-  ]
-```
+Before adding the package to your project you will need to import the lastest Google Play Plugins for Unity at https://github.com/google/play-unity-plugins/releases. We only need to import the following package:
 
-Next you can add the package to your project via the `OpenUPM`, the `Package Manager` or by manually editing the `manifest.json`
+- com.google.play.common
+- com.google.play.core
+- com.google.android.appbundle
+- com.google.play.assetdelivery
 
-### Via OpenUPM
-
-1. https://openupm.com/docs/getting-started
-2. `openupm add be.khepri.play.assetdelivery.addressables -f`
-
-note: `-f` is required as `openupm` can not install dependencies which are in a different scopedRegistry. 
-
+Next you can add the package to your project via the `Package Manager` or by manually editing the `manifest.json`
 ### Via Package Manager
 
 1. Press ` + `
 2. Select `Add package from git URL...` 
-3. url: `https://github.com/jelte/be.khepri.play.assetdelivery.addressables.git#1.0.0-rc2`
+3. url: `https://github.com/thanh-nguyen-kim/be.khepri.play.assetdelivery.addressables.git`
 
 ### Via manifest.json
 
 ```json
-   "be.khepri.play.assetdelivery.addressables": "https://github.com/jelte/be.khepri.play.assetdelivery.addressables.git#1.0.0-rc2",
+   "https://github.com/thanh-nguyen-kim/be.khepri.play.assetdelivery.addressables.git",
 ```
 
 ##  Configure Groups
@@ -89,30 +75,3 @@ Once the schema is added all that is left is to select how the group is to be de
 1. **Build Addressables**: Before the AAB can be build, the `Addressables` asset bundles need to be build.
 2. **Build Asset Pack config**: `Google` > `Create config for Addressables Groups`
 3. **Build Android App Bundle**: `Google` > `Build Android App Bundle...`
-
-*Note: Not tested yet*
-
-### Scripted build process
-
-Replace
-```csharp
-BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
-```
-with
-```csharp
-#if UNITY_ANDROID
-		if (!AssetPackBuilder.BuildBundleWithAssetPacks(buildPlayerOptions, EditorUserBuildSettings.androidBuildSubtarget, Addressables.BuildPath))
-		{
-			throw new Exception("BuildScript.Build Failed");
-		}
-#else
-		BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
-#endif
-```
-
-## Questions, Bugs, Feature requests
-
-Please for use 
-- https://github.com/jelte/be.khepri.play.assetdelivery.addressables/discussions for any questions and feature requests
-- https://github.com/jelte/be.khepri.play.assetdelivery.addressables/issues for bugs
-
