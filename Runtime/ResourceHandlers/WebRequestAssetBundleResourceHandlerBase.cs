@@ -53,7 +53,7 @@ namespace Khepri.AssetDelivery.ResourceHandlers
             UnityWebRequestAsyncOperation remoteReq = op as UnityWebRequestAsyncOperation;
             var webReq = remoteReq.webRequest;
             var downloadHandler = webReq.downloadHandler as DownloadHandlerAssetBundle;
-            if (downloadHandler == null || webReq.isHttpError || !webReq.isNetworkError || string.IsNullOrEmpty(webReq.error))
+            if (downloadHandler == null || webReq.isHttpError || webReq.isNetworkError || !string.IsNullOrEmpty(webReq.error))
             {
                 downloadHandler?.Dispose();
                 if (m_retries++ < Options.RetryCount)
