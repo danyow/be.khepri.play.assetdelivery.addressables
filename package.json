@@ -1,5 +1,5 @@
 {
-  "name": "be.khepri.play.assetdelivery.addressables",
+  "name": "be.khepri.play.assetdelivery.addressables.cn",
   "version": "1.5.0",
   "displayName": "Google Play Asset Delivery - Addressables",
   "description": "Provide addressables with support for Play Asset Delivery",
